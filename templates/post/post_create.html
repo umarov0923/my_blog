@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block extrahead %}
+<script>window.CKEDITOR_BASEPATH = '/my_static/ckeditor/ckeditor/';</script>
+{{ block.super }}
+{% endblock %}
+
+{% block title %} Post Create{% endblock %}
+
+
+    {% block content %}
+        <h3>Post Create</h3>
+        <form method="post" action="{% url 'post:post_create' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media}}
+            {{form|crispy}}
+        <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+    {% endblock %}
