@@ -24,7 +24,7 @@ class PostListView(View):
 
         if search_post:
             latest_posts = posts.filter(Q(tags__name=search_post))
-            return render(request, 'post/post_list.html',{'latest_posts':latest_posts})
+            return render(request, 'post/post_list.html', {'latest_posts': latest_posts})
         else:
             return render(request, 'post/post_list.html', {
                 'search_post': search_post,
@@ -32,35 +32,41 @@ class PostListView(View):
                 'most_viewed_posts': most_viewed_posts,
                 'week_popular_posts': week_popular_posts,
                 'month_popular_posts': month_popular_posts,
-                })
+            })
 
 
 class PostDetailView(View):
-    def get(self, request, id):
+    @staticmethod
+    def get(request, id):
         post = Post.objects.get(id=id)
         comments = post.comments.all()
         comment_form = CommentForm()
 
-        return render(request, 'post/post_detail.html', {'post': post, 'comments': comments, 'comment_form': comment_form })
+        return render(request, 'post/post_detail.html',
+                      {'post': post, 'comments': comments, 'comment_form': comment_form})
 
-    def post(self, request, id):
+    @staticmethod
+    def post(request, id):
         post = Post.objects.get(id=id)
         comments = post.comments.all()
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.user = request.user
-            new_comment.post =post
+            new_comment.post = post
             new_comment.save()
-            return render(request, 'post/post_detail.html', {'post': post, 'comments': comments, 'comment_form': comment_form })
+            return render(request, 'post/post_detail.html',
+                          {'post': post, 'comments': comments, 'comment_form': comment_form})
 
 
 class PostCreateView(LoginRequiredMixin, View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         form = PostForm()
         return render(request, 'post/post_create.html', {'form': form})
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         form = PostForm(request.POST, files=request.FILES)
         if form.is_valid():
             post = form.save(commit=False)

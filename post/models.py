@@ -4,7 +4,6 @@ from django.utils import timezone
 from users.models import CustomUser
 from ckeditor_uploader.fields import RichTextUploadingField
 
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -30,7 +29,6 @@ class Post(models.Model):
     views = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=False)
 
-
     def __str__(self):
         return self.title
 
@@ -43,4 +41,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment {self.content} by {self.user}"
-
